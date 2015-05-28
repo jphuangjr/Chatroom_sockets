@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/skeleton.css">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/chat.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var socket = io.connect();
+		var name = prompt("What's your name?");
+        var all_messages = '';
+		if(name === "")
+		{
+			name = "Anonoymous" + Math.floor(Math.random()*100)+1;
+		}
+		socket.emit("user_joined", name);
+		socket.on("all_chat", function (data){
+				all_messages = '';
+
+			for(x in data)
+			{
+				all_messages += "<span class= 'bold red'>" + data[x][0] + ":</span>" + "<span class = 'white'>" + data[x][1] + "</span>" + "<br>";
+			}
+			$(".messages").html(all_messages);
+			window.setInterval(function() {
+				  var elem = document.getElementById('messages');
+				  elem.scrollTop = elem.scrollHeight;
+				}, 10);
+		});
+
+        socket.on("clear_all_chat", function (){
+            all_messages = '';
+
+            $(".messages").html(all_messages);
+            window.setInterval(function() {
+                var elem = document.getElementById('messages');
+                elem.scrollTop = elem.scrollHeight;
+            }, 10);
+
+        });
+
+        $("form").on("submit", function(){
+			socket.emit("user_message_name", [name, $(this).serialize()]);
+			$("input[type=text]").val("");
+			return false;
+
+		});
+
+        $("button").click(function(){
+            socket.emit("clear_chat")
+        });
+	});
+	</script>
+    <style>
+        html {
+            background: url(https://sp.yimg.com/ib/th?id=JN.rw9e7H%2frtRJqoUMS%2bspmqQ&pid=15.1&P=0);
+            background-size: 100% 800px;
+            background-repeat: no-repeat;
+        }
+        .white{
+            color: white;
+        }
+        .red{
+           color: red;
+        }
+    </style>
+</head>
+<body>
+	<div class="container">
+		<h1 class="white">Joshua's Message Board</h1>
+		<div class="row u-full-width ">
+			<div class="twelve columns">
+				<div class="u-full-width messages" id="messages">
+				</div>
+			</div>
+            <button id="test1" class="white">Clear Chat</button>
+		</div>
+		<div class="row">
+			<form method="POST">
+				<div class="ten columns">
+					<input class="u-full-width" type="text" placeholder ="enter your message here" name="message">
+				</div>
+				<div class="two columns">
+					<input class="u-full-width white" type="submit" value="Send">
+
+				</div>
+			</form>
+
+        <!--</div>-->
+
+		</div>	
+	</div>
+</body>
+</html>

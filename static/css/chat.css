@@ -1,0 +1,10 @@
+.bold {
+	padding-right: 2%;
+}
+
+.messages {
+	border: 1px black solid;
+	padding: 1%;
+	max-height: 500px;
+	overflow: scroll;
+}

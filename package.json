@@ -1,0 +1,12 @@
+{
+  "name": "group_chat",
+  "description": "an app where you can group chat",
+  "dependencies": {
+    "body-parser": "*",
+    "ejs": "*",
+    "express": "*",
+    "path": "^0.11.14",
+    "querystring": "^0.2.0",
+    "socket.io": "*"
+  }
+}
