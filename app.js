@@ -3,7 +3,7 @@ var bodyparser = require("body-parser");
 var app = express();
 var querystring = require("querystring");
 var server = app.listen(8000);
-app.set('port', (process.env.PORT || 8000));
+//app.set('port', (process.env.PORT || 8000));
 var path = require("path");
 
 app.use(express.static(path.join(__dirname, "/static")));
