@@ -8,6 +8,11 @@
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
+
+		function escapeRegExp(str) {
+  	return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+	}
+
 		var socket = io.connect();
 		var name = prompt("What's your name?");
         var all_messages = '';
@@ -42,7 +47,7 @@
         });
 
         $("form").on("submit", function(){
-			socket.emit("user_message_name", [name, $(this).serialize()]);
+			socket.emit("user_message_name", [name, escapeRegExp($(this).serialize())]);
 			$("input[type=text]").val("");
 			return false;
 
